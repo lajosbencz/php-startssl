@@ -1,0 +1,23 @@
+{
+    "name": "lajosbencz/php-startssl",
+    "description": "PHP library for StartCom SSL API",
+    "minimum-stability": "dev",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Lajos Bencz",
+            "email": "lazos@lazos.me"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "StartSSL\\": "src/"
+        }
+    }
+}
