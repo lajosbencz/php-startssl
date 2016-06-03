@@ -1,0 +1,29 @@
+<?php
+
+
+namespace StartSSL\Response;
+
+
+use StartSSL\Response;
+
+class CertificateApply extends Response
+{
+    /*
+     * 'status' => 1,
+     * 'errorCode' => 0,
+     * 'shortMsg' => 'success',
+     * 'data' => [
+     *   'orderID' => 'b1aae61a-ea43-406c-be0a-93016a8646b3',
+     *   'orderNo' => '160603091034530',
+     *   'certificate' => 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUUyekNDQThPZ0F3SUJBZ0lRUkNFTVhiK1RTQ0R6TUN3Y3JjaVlwekFOQmdrcWhraUc5dzBCQVFzRkFEQjQKTVFzd0NRWURWUVFHRXdKSlRERVdNQlFHQTFVRUNoTU5VM1JoY25SRGIyMGdUSFJrTGpFcE1DY0dBMVVFQ3hNZwpVM1JoY25SRGIyMGdRMlZ5ZEdsbWFXTmhkR2x2YmlCQmRYUm9iM0pwZEhreEpqQWtCZ05WQkFNVEhWTjBZWEowClEyOXRJRU5zWVhOeklERWdSRllnVTJWeWRtVnlJRU5CTUI0WERURTJNRFl3TXpBd01qY3lOVm9YRFRFMk1EWXcKTkRBd01qY3lOVm93RXpFUk1BOEdBMVVFQXd3SWJHRjZiM011YldVd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQQpBNElCRHdBd2dnRUtBb0lCQVFDeXEzYUJRelhIcStC',
+     *   'certificateFieldMD5' => '1dbb52f99f42742d8c2a74046a500c4d',
+     *   'intermediateCertificate' => 'LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUY1VENDQTgyZ0F3SUJBZ0lRYWwzRDVUdE9UOUI3YVI2bC9PeGthekFOQmdrcWhraUc5dzBCQVFzRkFEQjkKTVFzd0NRWURWUVFHRXdKSlRERVdNQlFHQTFVRUNoTU5VM1JoY25SRGIyMGdUSFJrTGpFck1Da0dBMVVFQ3hNaQpVMlZqZFhKbElFUnBaMmwwWVd3Z1EyVnlkR2xtYVdOaGRHVWdVMmxuYm1sdVp6RXBNQ2NHQTFVRUF4TWdVM1JoCmNuUkRiMjBnUTJWeWRHbG1hV05oZEdsdmJpQkJkWFJvYjNKcGRIa3dIaGNOTVRVeE1qRTJNREV3TURBMVdoY04KTXpBeE1qRTJNREV3TURBMVdqQjRNUXN3Q1FZRFZRUUdFd0pKVERFV01CUUdBMVVFQ2hNTlUzUmhjblJEYjIwZwpUSFJrTGpFcE1DY0dBMVVFQ3hNZ1UzUmhjblJEYjIw',
+     *   'intermediateCertificateFieldMD5' => '4e7fb0c204f8574202496614aa86d1b2',
+     * ],
+     */
+    protected function _handle()
+    {
+        $d = &$this->_response;
+        count($d);
+    }
+}

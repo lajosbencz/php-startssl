@@ -2,27 +2,26 @@
 
 namespace StartSSL;
 
-abstract class Response implements ResponseInterface
+abstract class Response extends \ArrayObject implements ResponseInterface
 {
-    /** @var Request */
+    /** @var RequestInterface */
     protected $_request;
 
     /** @var array */
-    protected $_data = [];
-
-    public function __construct(Request $request)
-    {
-        $this->_request = $request;
-        $this->handle();
-    }
-
-    public function handle()
-    {
-        $this->_handle();
-        return $this;
-    }
+    protected $_response = [];
 
     abstract protected function _handle();
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct(RequestInterface $request, array $response=[])
+    {
+        $this->_request = $request;
+        $this->_response = $response;
+        parent::__construct($response);
+        $this->handle();
+    }
 
     /**
      * @return Request
@@ -32,29 +31,21 @@ abstract class Response implements ResponseInterface
         return $this->_request;
     }
 
-    public function offsetGet($offset)
+    /**
+     * @return $this
+     */
+    public function handle()
     {
-        if ($this->offsetExists($offset)) {
-            return $this->_data[$offset];
-        }
-        return null;
+        $this->_handle();
+        return $this;
     }
 
-    public function offsetExists($offset)
+    /**
+     * @return string
+     */
+    public function getJson()
     {
-        return isset($this->_data[$offset]);
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        $this->_data[$offset] = $value;
-    }
-
-    public function offsetUnset($offset)
-    {
-        if ($this->offsetExists($offset)) {
-            unset($this->_data[$offset]);
-        }
+        return json_encode($this->getArrayCopy(), JSON_PRETTY_PRINT, 1024);
     }
 
 }

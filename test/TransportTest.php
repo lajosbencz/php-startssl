@@ -2,6 +2,7 @@
 
 namespace StartSSL_Test;
 
+use StartSSL\Config;
 use StartSSL\Transport\Curl as CurlTransport;
 use StartSSL\Transport\Stream as StreamTransport;
 use StartSSL\TransportInterface;
@@ -10,18 +11,18 @@ class TransportTest extends \PHPUnit_Framework_TestCase
 {
     public function provideData()
     {
-        $base = 'https://lazos.me';
+        $base = Config::getDefault()->get('url');
         $transport = [
             new CurlTransport,
             new StreamTransport,
         ];
         $data = [
-            [$base . '/post.php', [], ['get' => [], 'post' => []]],
-            [$base . '/post.php?foo=bar', [], ['get' => ['foo' => 'bar'], 'post' => []]],
-            [$base . '/post.php?foo=bar', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => []]],
-            [$base . '/post.php?foo=bar', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
-            [$base . '/post.php', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
-            [$base . '/post.php', [], ['get' => [], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
+            [$base . '/', [], ['get' => [], 'post' => []]],
+            [$base . '/?foo=bar', [], ['get' => ['foo' => 'bar'], 'post' => []]],
+            [$base . '/?foo=bar', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => []]],
+            [$base . '/?foo=bar', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
+            [$base . '/', ['foo' => 'baz'], ['get' => ['foo' => 'baz'], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
+            [$base . '/', [], ['get' => [], 'post' => ['foo' => 'bar', 'baz' => 'bax']]],
         ];
         $r = [];
         foreach ($transport as $t) {

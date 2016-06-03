@@ -15,6 +15,10 @@ class Stream extends Transport
                 'method' => 'GET',
                 'header' => "Host: $h\r\nConnection: close\r\n",
             ],
+            'ssl' => [
+                'local_cert' => $this->getConfig('certificate'),
+                'passphrase' => $this->getConfig('password'),
+            ],
         ];
         if ($this->_payload) {
             $d = is_array($this->_payload) ? http_build_query($this->_payload) : (string)$this->_payload;

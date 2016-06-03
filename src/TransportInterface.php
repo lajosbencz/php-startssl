@@ -5,12 +5,6 @@ namespace StartSSL;
 interface TransportInterface
 {
     /**
-     * @param float $seconds
-     * @return $this
-     */
-    function setTimeout($seconds);
-
-    /**
      * @param string $url
      * @param array $query
      * @return $this

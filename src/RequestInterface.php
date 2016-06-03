@@ -5,9 +5,9 @@ namespace StartSSL;
 interface RequestInterface
 {
     /**
-     * @return Service
+     * @return Config
      */
-    function getService();
+    function getConfig();
 
     /**
      * @return string
@@ -18,6 +18,12 @@ interface RequestInterface
      * @return string
      */
     function getAction();
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    function setData(array $data=[]);
 
     /**
      * @return ResponseInterface

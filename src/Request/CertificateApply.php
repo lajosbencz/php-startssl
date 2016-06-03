@@ -3,29 +3,28 @@
 namespace StartSSL\Request;
 
 use StartSSL\Request;
+use StartSSL\Response\CertificateApply as Response;
 
+/**
+ * @package StartSSL\Request
+ * @method Response send()
+ */
 class CertificateApply extends Request
 {
-    /*
-     * tokenID
-     * actionType
-     * certType
-     * domains
-     * CSR
-     * userID
-     */
+    const TYPE_DV = 'DVSSL';
+    const TYPE_IV = 'IVSSL';
+    const TYPE_OV = 'OVSSL';
+    const TYPE_EV = 'EVSSL';
 
-    /** @var string */
-    protected $_type;
-
-    /** @var string */
-    protected $_csr;
-
-    /** @var string */
-    protected $_user;
+    protected $_data = [
+        'CSR' => null,
+        'domains' => null,
+        'certType' => self::TYPE_DV,
+        'userID' => '',
+    ];
 
     /** @var array */
-    protected $_domains;
+    protected $_domains = [];
 
     /**
      * @inheritdoc
@@ -40,7 +39,7 @@ class CertificateApply extends Request
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->_data['certType'];
     }
 
     /**
@@ -49,25 +48,25 @@ class CertificateApply extends Request
      */
     public function setType($type)
     {
-        $this->_type = $type;
+        $this->_data['certType'] = $type;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getCsr()
+    public function getSignature()
     {
-        return $this->_csr;
+        return $this->_data['CSR'];
     }
 
     /**
      * @param string $csr
      * @return $this
      */
-    public function setCsr($csr)
+    public function setSignature($csr)
     {
-        $this->_csr = $csr;
+        $this->_data['CSR'] = $csr;
         return $this;
     }
 
@@ -76,7 +75,7 @@ class CertificateApply extends Request
      */
     public function getUser()
     {
-        return $this->_user;
+        return $this->_data['userID'];
     }
 
     /**
@@ -85,7 +84,7 @@ class CertificateApply extends Request
      */
     public function setUser($user)
     {
-        $this->_user = $user;
+        $this->_data['userID'] = $user;
         return $this;
     }
 
@@ -104,6 +103,34 @@ class CertificateApply extends Request
     public function setDomains($domains)
     {
         $this->_domains = $domains;
+        $this->_data['domains'] = join(',', $this->_domains);
+        return $this;
+    }
+
+    /**
+     * @param string $domain
+     * @param array $subDomains (optional)
+     * @return $this
+     */
+    public function addDomain($domain, $subDomains=[]) {
+        $this->_domains[$domain] = $domain;
+        foreach($subDomains as $subDomain) {
+            $subDomain = $subDomain . '.' . $domain;
+            $this->_domains[$subDomain] = $subDomain;
+        }
+        $this->_data['domains'] = join(',', $this->_domains);
+        return $this;
+    }
+
+    /**
+     * @param string $domain
+     * @return $this
+     */
+    public function removeDomain($domain) {
+        if(isset($this->_domains[$domain])) {
+            unset($this->_domains[$domain]);
+        }
+        $this->_data['domains'] = join(',', $this->_domains);
         return $this;
     }
 

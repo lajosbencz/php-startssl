@@ -4,8 +4,7 @@ namespace StartSSL;
 
 abstract class Transport implements TransportInterface
 {
-    /** @var int */
-    protected $_timeout = null;
+    use ConfigTrait;
 
     /** @var string */
     protected $_url = null;
@@ -24,38 +23,11 @@ abstract class Transport implements TransportInterface
 
     /**
      * Transport constructor.
-     * @param int $timeout (optional)
-     * @param string $url (optional)
-     * @param array $data (optional)
+     * @param Config $config (optional)
      */
-    public function __construct($timeout = null, $url = null, array $data = [])
+    public function __construct(Config $config=null)
     {
-        if ($timeout) {
-            $this->setTimeout($timeout);
-        }
-        if ($url) {
-            $this->setUrl($url);
-        }
-        if ($data) {
-            $this->setPayload($data);
-        }
-    }
-
-    /**
-     * @return int
-     */
-    public function getTimeout()
-    {
-        return $this->_timeout;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setTimeout($timeout)
-    {
-        $this->_timeout = max(0, $timeout);
-        return $this;
+        $this->setConfig($config ? : Config::getDefault());
     }
 
     /**
@@ -74,6 +46,9 @@ abstract class Transport implements TransportInterface
         $this->_response = null;
         if ($url) {
             $parsed = parse_url($url);
+            if(!isset($parsed['path'])) {
+                $parsed['path'] = '/';
+            }
             $url = $parsed['scheme'] . '://' . $parsed['host'] . $parsed['path'];
             if (isset($parsed['query'])) {
                 $q = [];
