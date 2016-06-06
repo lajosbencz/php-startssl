@@ -64,14 +64,15 @@ class Config extends \ArrayObject
         return $r;
     }
 
+    /** @var Certificate */
+    protected $_certificate;
+
     public function __construct($input=[], $flags=0, $iterator_class = 'ArrayIterator')
     {
+        $file = false;
         if(is_string($input) && substr($input, -4, 4) == '.ini' && is_file($input)) {
             $file = realpath($input);
             $input = parse_ini_file($file, true);
-            if(isset($input['certificate']) && $input['certificate'][0] != DIRECTORY_SEPARATOR) {
-                $input['certificate'] = realpath(dirname($file) . DIRECTORY_SEPARATOR . $input['certificate']);
-            }
         }
         if(is_array($input)) {
             $i = [];
@@ -87,6 +88,15 @@ class Config extends \ArrayObject
             $input = array_merge(self::DEFAULTS, $input);
         }
         parent::__construct($input, $flags, $iterator_class);
+        if(isset($input['certificate']) && $input['certificate'][0] != DIRECTORY_SEPARATOR && $file) {
+            $input['certificate'] = realpath(dirname($file) . DIRECTORY_SEPARATOR . $input['certificate']);
+        }
+        if(substr($input['certificate'],-4,4) == '.p12') {
+            $this->_certificate = Certificate::fromFileP12($input['certificate'], $input['password']);
+        }
+        else {
+            $this->_certificate = Certificate::fromFilePEM($input['certificate']);
+        }
     }
 
     public function offsetExists($index)
@@ -96,6 +106,9 @@ class Config extends \ArrayObject
 
     public function offsetGet($index)
     {
+        if($index == 'certificate') {
+            return $this->_certificate;
+        }
         return parent::offsetGet(self::Name($index));
     }
 

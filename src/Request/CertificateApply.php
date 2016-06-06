@@ -35,6 +35,15 @@ class CertificateApply extends Request
     }
 
     /**
+     * @inheritdoc
+     */
+    function getFieldName()
+    {
+        return '';
+    }
+
+
+    /**
      * @return string
      */
     public function getType()
@@ -66,6 +75,13 @@ class CertificateApply extends Request
      */
     public function setSignature($csr)
     {
+        if(strpos($csr,'-----BEGIN CERTIFICATE REQUEST-----') !== 0) {
+            if(is_file($csr)) {
+                $csr = file_get_contents($csr);
+            } else {
+                throw new \InvalidArgumentException('Invalid CSR, must be file path or PEM encoded CSR');
+            }
+        }
         $this->_data['CSR'] = $csr;
         return $this;
     }

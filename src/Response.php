@@ -41,6 +41,43 @@ abstract class Response extends \ArrayObject implements ResponseInterface
     }
 
     /**
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->getArrayCopy()['status'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getErrorCode()
+    {
+        return $this->getArrayCopy()['errorCode'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortMessage()
+    {
+        return $this->getArrayCopy()['shortMsg'];
+    }
+
+    /**
+     * @param string $index (optional)
+     * @return mixed
+     */
+    public function getData($index=null)
+    {
+        $a = $this->getArrayCopy();
+        if($index !== null && isset($a['data'][$index])) {
+            return $a['data'][$index];
+        }
+        return $a['data'];
+    }
+
+    /**
      * @return string
      */
     public function getJson()

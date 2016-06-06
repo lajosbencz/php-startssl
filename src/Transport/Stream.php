@@ -16,8 +16,8 @@ class Stream extends Transport
                 'header' => "Host: $h\r\nConnection: close\r\n",
             ],
             'ssl' => [
-                'local_cert' => $this->getConfig('certificate'),
-                'passphrase' => $this->getConfig('password'),
+                'local_cert' => $this->getConfig('certificate')->getPath(),
+                'passphrase' => $this->getConfig('certificate')->getPassword(),
             ],
         ];
         if ($this->_payload) {
@@ -36,8 +36,10 @@ class Stream extends Transport
             $this->_response = null;
         }
         $r = '';
-        while (!feof($s)) {
-            $r .= fgets($s, 4096);
+        if(is_resource($s)) {
+            while (!feof($s)) {
+                $r .= fgets($s, 4096);
+            }
         }
         if ($r) {
             $this->_response = $r;

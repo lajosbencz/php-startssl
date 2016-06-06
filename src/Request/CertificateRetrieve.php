@@ -17,12 +17,25 @@ class CertificateRetrieve extends Request
      * orderID
      */
 
+    protected $_data = [
+        'tokenID' => null,
+        'orderID' => null,
+    ];
+
     /**
      * @inheritdoc
      */
     function getAction()
     {
         return 'RetrieveCertificate';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    function getFieldName()
+    {
+        return 'RequestData';
     }
 
 

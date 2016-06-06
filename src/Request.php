@@ -26,7 +26,7 @@ abstract class Request implements RequestInterface
     public function send()
     {
         $data = array_merge(['tokenID'=>$this->getConfig('token'),'actionType'=>$this->getAction()],$this->_data);
-        $data = ['RequestData'=>json_encode($data, JSON_ERROR_UTF8)];
+        $data = [$this->getFieldName()=>json_encode($data, JSON_ERROR_UTF8)];
         $class = $this->getResponseName();
         $transport = $this->getConfig('transport');
         /** @var TransportInterface $transport */

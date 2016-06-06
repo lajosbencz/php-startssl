@@ -20,6 +20,11 @@ interface RequestInterface
     function getAction();
 
     /**
+     * @return string
+     */
+    function getFieldName();
+
+    /**
      * @param array $data
      * @return $this
      */

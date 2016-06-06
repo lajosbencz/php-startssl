@@ -23,20 +23,27 @@ class Curl extends Transport
     {
         $this->_error = null;
         $this->_errorCode = 0;
-        curl_reset($this->_curl);
-        curl_setopt($this->_curl, CURLOPT_URL, $this->getUrl());
-        curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->getConfig('timeout'));
-        curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($this->_curl, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($this->_curl, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($this->_curl, CURLOPT_SSLCERT, $this->getConfig('certificate'));
-        curl_setopt($this->_curl, CURLOPT_SSLCERTTYPE, "P12");
-        curl_setopt($this->_curl, CURLOPT_SSLKEYPASSWD, $this->getConfig('password'));
-        if ($this->_payload) {
-            curl_setopt($this->_curl, CURLOPT_POST, 1);
-            curl_setopt($this->_curl, CURLOPT_POSTFIELDS, http_build_query($this->_payload));
+        $options = [
+            CURLOPT_URL => $this->getUrl(),
+            CURLOPT_TIMEOUT => $this->getConfig('timeout'),
+            CURLOPT_VERBOSE => 1,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.52 Safari/537.17',
+            CURLOPT_HEADER => 0,
+            CURLOPT_AUTOREFERER => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_FOLLOWLOCATION => 1,
+            CURLOPT_SSLCERT => $this->getConfig('certificate')->getPath(),
+            CURLOPT_SSLCERTPASSWD => $this->getConfig('certificate')->getPassword(),
+        ];
+        //$cert = $this->getConfig('certificate');
+        if($this->_payload) {
+            $options[CURLOPT_POST] = 1;
+            $options[CURLOPT_POSTFIELDS] = http_build_query($this->_payload);
         }
+        curl_reset($this->_curl);
+        curl_setopt_array($this->_curl, $options);
         $r = curl_exec($this->_curl);
         if ($r === false) {
             $this->_error = curl_error($this->_curl);
